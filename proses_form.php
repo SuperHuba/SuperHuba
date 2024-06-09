@@ -3,6 +3,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include 'config.php';
     include 'functions.php';
+    include 'calculate_metrics.php'; // Menambahkan file untuk menghitung metrik evaluasi
 
     $animal = $_POST['animal'];
     $symptom1 = $_POST['symptom1'];
@@ -12,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $symptom5 = $_POST['symptom5'];
 
     $symptoms = [$symptom1, $symptom2, $symptom3, $symptom4, $symptom5];
+    
 
     $data = getTrainingData($conn);
     $conn->close();
@@ -55,9 +57,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'classification' => $classification
     ];
 
-    // Meneruskan informasi ke halaman hasil.php
+    // Simpan hasil klasifikasi ke sesi
     session_start();
     $_SESSION['explanation'] = $explanation;
+
+    // Uji hasil klasifikasi
+    $true_labels = ['yes', 'no', 'yes', 'no', 'yes']; // Label sebenarnya (diganti dengan data yang sesuai)
+    $predicted_labels = [$classification, 'no', 'yes', 'no', 'yes']; // Prediksi model (diganti dengan data yang sesuai)
+    $metrics = calculateMetrics($true_labels, $predicted_labels);
+
+    // Simpan metrik evaluasi ke dalam sesi
+    $_SESSION['metrics'] = $metrics;
+
+    // Alihkan ke halaman hasil.php
     header("Location: hasil.php");
     exit();
 }
