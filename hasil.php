@@ -5,10 +5,10 @@ session_start();
 if (isset($_SESSION['explanation']) && isset($_SESSION['metrics'])) {
     $explanation = $_SESSION['explanation'];
     $metrics = $_SESSION['metrics'];
-    unset($_SESSION['explanation']); // Hapus variabel dari sesi setelah digunakan
-    unset($_SESSION['metrics']); // Hapus variabel dari sesi setelah digunakan
+    unset($_SESSION['explanation']); 
+    unset($_SESSION['metrics']); 
 } else {
-    // Redirect jika tidak ada penjelasan hasil yang diteruskan
+   
     header("Location: proses_form.php");
     exit();
 }
@@ -137,19 +137,23 @@ if (isset($_SESSION['explanation']) && isset($_SESSION['metrics'])) {
             });
         </script>
     </div>
+    <h3 style="margin-left:100px; padding-top: 80px;">Hasil Uji</h3>
+<table class="table table-bordered table-custom" style="width: 800px; margin: auto;">
+    <thead>
+        <tr>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F1 Score</th>
+        </tr>
+    </thead>
     <tbody>
-                <tr>
-                    <td>Precision</td>
-                    <td><?php echo $metrics['precision']; ?></td>
-                </tr>
-                <tr>
-                    <td>Recall</td>
-                    <td><?php echo $metrics['recall']; ?></td>
-                </tr>
-                <tr>
-                    <td>F1 Score</td>
-                    <td><?php echo $metrics['f1_score']; ?></td>
-                </tr>
-            </tbody>
+        <tr>
+            <td><?php echo $metrics['precision']; ?></td>
+            <td><?php echo $metrics['recall']; ?></td>
+            <td><?php echo $metrics['f1_score']; ?></td>
+        </tr>
+    </tbody>
+</table>
+
 </body>
 </html>
